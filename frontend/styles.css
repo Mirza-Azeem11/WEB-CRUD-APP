@@ -1,0 +1,213 @@
+/* Reset */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    height: 100%;
+}
+
+/* Background Image */
+.background-image {
+    background-image: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1950&q=80');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.6);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Main Container */
+.container {
+    padding: 20px;
+}
+
+/* Heading */
+h1 {
+    text-align: center;
+    color: white;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+}
+
+/* Common Form Card for Signup/Login/Contact */
+.form-section {
+    background: rgba(255, 255, 255, 0.97);
+    padding: 30px 25px;
+    margin: 20px auto;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 12px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease forwards;
+    margin-bottom: 50px;
+}
+/* Specific Form Card (Add/Update Contact Form) */
+.form-card {
+    background: rgba(255, 255, 255, 0.97);
+    padding: 30px 25px;
+    margin: 20px auto;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 12px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease forwards;
+    margin-bottom: 30px;
+}
+
+
+/* Table Card */
+.table-card {
+    background: rgba(255, 255, 255, 0.97);
+    padding: 20px;
+    margin: 20px auto;
+    width: 95%;
+    max-width: 1000px;
+    border-radius: 12px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease forwards;
+}
+
+/* Inputs */
+input {
+    width: 100%;
+    padding: 14px 18px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: none;
+    transition: 0.3s;
+    box-sizing: border-box;
+}
+
+/* Focused Input */
+input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+/* Buttons */
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Button Hover */
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Logout Button */
+.logout-btn {
+    background-color: #dc3545;
+    width: auto;
+    padding: 10px 20px;
+}
+
+.logout-btn:hover {
+    background-color: #c82333;
+}
+
+/* Table */
+#contacts-table {
+    width: 100%;
+    margin-top: 10px;
+    background: white;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Table Header */
+#contacts-table th {
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    text-transform: uppercase;
+}
+
+/* Table Body */
+#contacts-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Table Buttons */
+#contacts-table button {
+    width: auto;
+    padding: 6px 12px;
+    margin: 3px;
+    font-size: 14px;
+    border-radius: 6px;
+}
+
+/* Edit Button */
+#contacts-table button:nth-child(1) {
+    background-color: #28a745;
+}
+
+#contacts-table button:nth-child(1):hover {
+    background-color: #218838;
+}
+
+/* Delete Button */
+#contacts-table button:nth-child(2) {
+    background-color: #dc3545;
+}
+
+#contacts-table button:nth-child(2):hover {
+    background-color: #c82333;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Settings */
+@media (max-width: 768px) {
+    .form-section, .table-card {
+        width: 90%;
+    }
+
+    #contacts-table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+    }
+
+    #contacts-table th, #contacts-table td {
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 22px;
+    }
+    
+    h2 {
+        font-size: 18px;
+    }
+
+    button {
+        font-size: 14px;
+    }
+
+    input {
+        font-size: 14px;
+    }
+}

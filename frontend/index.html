@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Manager App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="background-image"></div>
+
+    <div class="container">
+
+        <h1>Contact Manager App</h1>
+
+        <!-- Signup Form -->
+        <div id="signup-section" class="form-section fade-in">
+            <h2>Sign Up for Contact Manager</h2>
+            <form id="signup-form">
+                <input type="email" id="signup-email" placeholder="Enter your Email" required><br>
+                <input type="password" id="signup-password" placeholder="Enter your Password" required><br>
+                <button type="submit">Register Now</button>
+                <p id="signup-error" style="color:red; text-align:center;"></p>
+            </form>
+            <p style="text-align:center;">Already have an account? <a href="#" id="to-login">Login Here</a></p>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login-section" class="form-section fade-in" style="display:none;">
+            <h2>Login to Contact Manager</h2>
+            <form id="login-form">
+                <input type="email" id="login-email" placeholder="Enter your Email" required><br>
+                <input type="password" id="login-password" placeholder="Enter your Password" required><br>
+                <button type="submit">Login Now</button>
+                <p id="login-error" style="color:red; text-align:center;"></p>
+            </form>
+            <p style="text-align:center;">Don't have an account? <a href="#" id="to-signup">Register Here</a></p>
+        </div>
+
+        <!-- Contact Section -->
+        <div id="contact-section" class="fade-in" style="display:none;">
+            
+            <div style="text-align: center; margin-bottom: 20px;">
+                <button id="logout-button" class="logout-btn">Logout</button>
+            </div>
+
+            <!-- Add / Update Contact Form -->
+            <div class="form-card">
+                <h2>Add / Update Your Contacts</h2>
+                <form id="contact-form">
+                    <input type="text" id="name" placeholder="Enter Name" required><br>
+                    <input type="email" id="email" placeholder="Enter Email" required><br>
+                    <input type="text" id="phoneNumber" placeholder="Enter Phone Number" required><br>
+                    <input type="text" id="address" placeholder="Enter Address" required><br>
+                    <button type="submit" id="add-update-button">Add Contact</button>
+                </form>
+            </div>
+
+            <!-- Contacts List Table -->
+            <div class="table-card">
+                <h2>Your Contacts List</h2>
+                <table id="contacts-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="contacts-body">
+                        <!-- Contacts will appear here -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+<script src="script.js"></script>
+</body>
+</html>
