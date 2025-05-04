@@ -2,27 +2,70 @@ const API_URL = "http://localhost:5000/api";
 let token = "";
 let editContactId = null;
 
-// Show Signup Section
 function showSignup() {
     document.getElementById('signup-section').style.display = 'block';
     document.getElementById('login-section').style.display = 'none';
     document.getElementById('contact-section').style.display = 'none';
 }
 
-// Show Login Section
 function showLogin() {
     document.getElementById('signup-section').style.display = 'none';
     document.getElementById('login-section').style.display = 'block';
     document.getElementById('contact-section').style.display = 'none';
 }
 
-// Signup
-document.getElementById('signup-form').addEventListener('submit', async (e) => {
+// Signup with validation
+const signupForm = document.getElementById('signup-form');
+signupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = document.getElementById('signup-email').value;
-    const password = document.getElementById('signup-password').value;
-    const errorElement = document.getElementById('signup-error');
-    errorElement.innerText = '';
+
+    const emailInput = document.getElementById('signup-email');
+    const passwordInput = document.getElementById('signup-password');
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+    const emailError = document.getElementById('email-error');
+    const passwordError = document.getElementById('password-error');
+
+    emailError.innerText = '';
+    passwordError.innerText = '';
+    emailInput.classList.remove('invalid', 'valid');
+    passwordInput.classList.remove('invalid', 'valid');
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
+    const validDomains = ["gmail.com", "yahoo.com", "outlook.com"];
+    const domain = email.split('@')[1];
+
+    let hasError = false;
+
+    if (!email) {
+        emailError.innerText = 'Email is required.';
+        emailInput.classList.add('invalid');
+        hasError = true;
+    } else if (!emailRegex.test(email)) {
+        emailError.innerText = 'Please enter a valid email address.';
+        emailInput.classList.add('invalid');
+        hasError = true;
+    } else if (!validDomains.includes(domain)) {
+        emailError.innerText = 'Only Gmail, Yahoo, or Outlook emails are allowed.';
+        emailInput.classList.add('invalid');
+        hasError = true;
+    } else {
+        emailInput.classList.add('valid');
+    }
+
+    if (!password) {
+        passwordError.innerText = 'Password is required.';
+        passwordInput.classList.add('invalid');
+        hasError = true;
+    } else if (password.length < 6) {
+        passwordError.innerText = 'Password must be at least 6 characters.';
+        passwordInput.classList.add('invalid');
+        hasError = true;
+    } else {
+        passwordInput.classList.add('valid');
+    }
+
+    if (hasError) return;
 
     try {
         const res = await fetch(`${API_URL}/auth/register`, {
@@ -37,20 +80,26 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
             alert('Registration Successful! Please Login.');
             showLogin();
         } else {
-            errorElement.innerText = data.message || 'Registration failed.';
+            emailError.innerText = data.message || 'Registration failed.';
         }
     } catch (err) {
-        errorElement.innerText = 'Server error.';
+        emailError.innerText = 'Server error.';
     }
 });
 
 // Login
-document.getElementById('login-form').addEventListener('submit', async (e) => {
+const loginForm = document.getElementById('login-form');
+loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = document.getElementById('login-email').value;
-    const password = document.getElementById('login-password').value;
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value.trim();
     const errorElement = document.getElementById('login-error');
     errorElement.innerText = '';
+
+    if (!email || !password) {
+        errorElement.innerText = 'Email and password are required.';
+        return;
+    }
 
     try {
         const res = await fetch(`${API_URL}/auth/login`, {
@@ -98,28 +147,20 @@ document.getElementById('contact-form').addEventListener('submit', async (e) => 
         address: document.getElementById('address').value
     };
 
-    if (editContactId) {
-        await fetch(`${API_URL}/contacts/${editContactId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(contact)
-        });
-        editContactId = null;
-        document.getElementById('add-update-button').innerText = "Add Contact";
-    } else {
-        await fetch(`${API_URL}/contacts`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(contact)
-        });
-    }
+    const url = editContactId ? `${API_URL}/contacts/${editContactId}` : `${API_URL}/contacts`;
+    const method = editContactId ? 'PUT' : 'POST';
 
+    await fetch(url, {
+        method,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(contact)
+    });
+
+    editContactId = null;
+    document.getElementById('add-update-button').innerText = "Add Contact";
     document.getElementById('contact-form').reset();
     fetchContacts();
 });
@@ -150,7 +191,6 @@ async function fetchContacts() {
     });
 }
 
-// Edit Contact
 function editContact(id, name, email, phoneNumber, address) {
     document.getElementById('name').value = name;
     document.getElementById('email').value = email;
@@ -161,7 +201,6 @@ function editContact(id, name, email, phoneNumber, address) {
     document.getElementById('add-update-button').innerText = "Update Contact";
 }
 
-// Delete Contact
 async function deleteContact(id) {
     await fetch(`${API_URL}/contacts/${id}`, {
         method: 'DELETE',
@@ -170,14 +209,12 @@ async function deleteContact(id) {
     fetchContacts();
 }
 
-// Logout
 document.getElementById('logout-button').addEventListener('click', () => {
     localStorage.removeItem('token');
     token = "";
     showLogin();
 });
 
-// Auto-login if token is saved
 window.addEventListener('load', () => {
     const savedToken = localStorage.getItem('token');
     if (savedToken) {
@@ -187,4 +224,29 @@ window.addEventListener('load', () => {
         document.getElementById('contact-section').style.display = 'block';
         fetchContacts();
     }
+});
+
+document.getElementById("search-input").addEventListener("input", function () {
+    const searchValue = this.value.toLowerCase();
+    const rows = document.querySelectorAll("#contacts-body tr");
+
+    rows.forEach(row => {
+        const cells = row.querySelectorAll("td");
+        let matched = false;
+
+        for (let i = 0; i < 3; i++) {
+            const cellText = cells[i].innerText;
+            const lowerText = cellText.toLowerCase();
+
+            if (searchValue && lowerText.includes(searchValue)) {
+                const regex = new RegExp(`(${searchValue})`, 'gi');
+                cells[i].innerHTML = cellText.replace(regex, `<mark>$1</mark>`);
+                matched = true;
+            } else {
+                cells[i].innerHTML = cellText;
+            }
+        }
+
+        row.style.display = matched || !searchValue ? "" : "none";
+    });
 });
